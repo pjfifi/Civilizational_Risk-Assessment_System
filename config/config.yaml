@@ -28,27 +28,27 @@ lemmatize: true
 
 #Feature Engineering settings
 feature_engineering:
-time_series_features:
-  enabled: true
-window_sizes: [7, 14, 30] # Days for rolling averages, sums, etc.
-time_series_advanced_features:
-  enabled: true
-lag_features: [1, 7, 14] # Lags for previous values
-diff_features: [1] # Differences (e.g., rate of change)
-# Note: These apply to relevant numeric time-series columns
-interaction_features:
-  enabled: false
-  features_to_interact: [["feature_A", "feature_B"], ["feature_C", "feature_D"]]
-polynomial_features:
-  enabled: false
-  degree: 2
-  features_to_poly: ["feature_X", "feature_Y"]
-nlp_features:
-  enabled: true
-  text_columns: ["social_media_text", "news_headline", "news_body"] # Columns containing text data
-  vectorizer_type: "tfidf" # Options: "tfidf", "count" (for simple token counts)
-  max_features: 1000 # Max features for TF-IDF/CountVectorizer
-# For advanced embeddings (e.g., Word2Vec, BERT), this would require a separate model loading/processing step.
+  time_series_features:
+    enabled: true
+    window_sizes: [7, 14, 30] # Days for rolling averages, sums, etc.
+    advanced_features:
+      enabled: true
+      lag_features: [1, 7, 14] # Lags for previous values
+      diff_features: [1] # Differences (e.g., rate of change)
+      # Note: These apply to relevant numeric time-series columns
+  interaction_features:
+    enabled: false
+    features_to_interact: [["feature_A", "feature_B"], ["feature_C", "feature_D"]]
+  polynomial_features:
+    enabled: false
+    degree: 2
+    features_to_poly: ["feature_X", "feature_Y"]
+  nlp_features:
+    enabled: true
+    text_columns: ["social_media_text", "news_headline", "news_body"] # Columns containing text data
+    vectorizer_type: "tfidf" # Options: "tfidf", "count" (for simple token counts)
+    max_features: 1000 # Max features for TF-IDF/CountVectorizer
+    # For advanced embeddings (e.g., Word2Vec, BERT), this would require a separate model loading/processing step.
   feature_scaling: "standard" # Options: "standard", "minmax", "robust", null (no scaling)
 
 #Data Splitting settings
@@ -66,111 +66,112 @@ smote_k_neighbors: 5 # For SMOTE/ADASYN
 #Model Training settings
 models:
 lightgbm:
-enabled: true
-params:
-objective: "binary"
-metric: "auc"
-boosting_type: "gbdt"
-n_estimators: 1000
-learning_rate: 0.05
-num_leaves: 31
-max_depth: -1
-min_child_samples: 20
-subsample: 0.8
-colsample_bytree: 0.8
-n_jobs: -1
-hyperparameter_tuning:
-enabled: true
-n_trials: 50 # Number of Optuna trials
-timeout: 3600 # Seconds for tuning
-sampler: "tpe" # Options: "tpe", "random"
-search_space:
-learning_rate: [0.01, 0.1]
-num_leaves: [20, 60]
-max_depth: [5, 15]
-subsample: [0.6, 1.0]
-colsample_bytree: [0.6, 1.0]
-reg_alpha: [0.0, 0.1]
-reg_lambda: [0.0, 0.1]
+  enabled: true
+  params:
+    objective: "binary"
+    metric: "auc"
+    boosting_type: "gbdt"
+    n_estimators: 1000
+    learning_rate: 0.05
+    num_leaves: 31
+    max_depth: -1
+    min_child_samples: 20
+    subsample: 0.8
+    colsample_bytree: 0.8
+    n_jobs: -1
+  hyperparameter_tuning:
+    enabled: true
+    n_trials: 50 # Number of Optuna trials
+    timeout: 3600 # Seconds for tuning
+    sampler: "tpe" # Options: "tpe", "random"
+  search_space:
+    learning_rate: [0.01, 0.1]
+    num_leaves: [20, 60]
+    max_depth: [5, 15]
+    subsample: [0.6, 1.0]
+    colsample_bytree: [0.6, 1.0]
+    reg_alpha: [0.0, 0.1]
+    reg_lambda: [0.0, 0.1]
 
 neural_network: # For tabular data classification
-enabled: true
-architecture:
-input_shape: null # Will be determined dynamically
-hidden_layers: [64, 32]
-activation: "relu"
-output_activation: "sigmoid"
-training:
-epochs: 50
-batch_size: 32
-learning_rate: 0.001
-optimizer: "adam"
-loss: "binary_crossentropy"
-metrics: ["accuracy", "auc"]
-hyperparameter_tuning:
-enabled: false # NN tuning can be very resource intensive
-n_trials: 10
-timeout: 1800
-search_space:
-hidden_layers: [[32, 16], [64, 32], [128, 64, 32]]
-learning_rate: [0.0001, 0.005]
-batch_size: [16, 64]
+  enabled: true
+  architecture:
+    input_shape: null # Will be determined dynamically
+    hidden_layers: [64, 32]
+    activation: "relu"
+    output_activation: "sigmoid"
+  training:
+    epochs: 50
+    batch_size: 32
+    learning_rate: 0.001
+    optimizer: "adam"
+    loss: "binary_crossentropy"
+    metrics: ["accuracy", "auc"]
+  hyperparameter_tuning:
+    enabled: false # NN tuning can be very resource intensive
+    n_trials: 10
+    timeout: 1800
+    search_space:
+      hidden_layers: [[32, 16], [64, 32], [128, 64, 32]]
+      learning_rate: [0.0001, 0.005]
+      batch_size: [16, 64]
 
 deep_learning_sequence: # For time-series or sequential text data
-enabled: false # Set to true to enable
-model_type: "lstm" # Options: "lstm", "gru", "transformer"
-sequence_length: 30 # Number of past time steps to consider for each prediction
-architecture:
-input_shape: null # Will be determined dynamically (sequence_length, num_features)
-layers:
-- type: "lstm"
-units: 128
-return_sequences: false # True if stacking LSTM layers
-# - type: "dropout"
-#   rate: 0.2
-# - type: "dense"
-#   units: 64
-#   activation: "relu"
-output_activation: "sigmoid"
-training:
-epochs: 30
-batch_size: 16
-learning_rate: 0.001
-optimizer: "adam"
-loss: "binary_crossentropy"
-metrics: ["accuracy", "auc"]
+  enabled: false # Set to true to enable
+  model_type: "lstm" # Options: "lstm", "gru", "transformer"
+  sequence_length: 30 # Number of past time steps to consider for each prediction
+  architecture:
+  input_shape: null # Will be determined dynamically (sequence_length, num_features)
+  layers:
+  - type: "lstm"
+  units: 128
+  return_sequences: false # True if stacking LSTM layers
+  # - type: "dropout"
+  #   rate: 0.2
+  # - type: "dense"
+  #   units: 64
+  #   activation: "relu"
+  output_activation: "sigmoid"
+  training:
+  epochs: 30
+  batch_size: 16
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss: "binary_crossentropy"
+  metrics: ["accuracy", "auc"]
+
 hyperparameter_tuning:
-enabled: false
-n_trials: 5
-timeout: 900
+  enabled: false
+  n_trials: 5
+  timeout: 900
 search_space:
-learning_rate: [0.0005, 0.002]
-batch_size: [8, 32]
-lstm_units: [64, 128, 256]
+  learning_rate: [0.0005, 0.002]
+  batch_size: [8, 32]
+  lstm_units: [64, 128, 256]
 
 time_series_forecasting: # For predicting future numeric values (e.g., case counts)
-enabled: false # Set to true to enable
-model_type: "lgbm_regressor" # Options: "lgbm_regressor", "prophet", "arima" (requires statsmodels)
-forecast_horizon: 7 # Number of future time steps to forecast
-# For lgbm_regressor, use lightgbm params. For Prophet/ARIMA, specific params would go here.
-# Example for Prophet:
-# prophet_params:
-#   seasonality_mode: 'multiplicative'
-#   changepoint_prior_scale: 0.05
+  enabled: false # Set to true to enable
+  model_type: "lgbm_regressor" # Options: "lgbm_regressor", "prophet", "arima" (requires statsmodels)
+  forecast_horizon: 7 # Number of future time steps to forecast
+  # For lgbm_regressor, use lightgbm params. For Prophet/ARIMA, specific params would go here.
+  # Example for Prophet:
+  # prophet_params:
+  #   seasonality_mode: 'multiplicative'
+  #   changepoint_prior_scale: 0.05
 
 anomaly_detection: # For detecting unusual patterns
-enabled: false # Set to true to enable
-algorithm: "isolation_forest" # Options: "isolation_forest", "one_class_svm", "lof"
-contamination: 0.01 # The proportion of outliers in the dataset (for Isolation Forest, One-Class SVM)
-# isolation_forest_params:
-#   n_estimators: 100
-#   max_features: 1.0
+  enabled: false # Set to true to enable
+  algorithm: "isolation_forest" # Options: "isolation_forest", "one_class_svm", "lof"
+  contamination: 0.01 # The proportion of outliers in the dataset (for Isolation Forest, One-Class SVM)
+  # isolation_forest_params:
+  #   n_estimators: 100
+  #   max_features: 1.0
 
 ai_api:
-enabled: false
-api_endpoint: "https://api.example.com/outbreak_prediction"
-api_key: "YOUR_API_KEY_HERE" # Replace with actual key or environment variable
-model_name: "outbreak-predictor-v1"
+  enabled: false
+  api_endpoint: "https://api.example.com/outbreak_prediction"
+  api_key: "YOUR_API_KEY_HERE" # Replace with actual key or environment variable
+  model_name: "outbreak-predictor-v1"
 
 #Evaluation settings
 evaluation:
