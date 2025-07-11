@@ -1,77 +1,76 @@
+Civilizational Risk Assessment System
+This project aims to develop a system for Civilizational Risk Assessment, identifying regions or societies at increased risk of systemic failure. It integrates data from diverse sources related to environment, economy, governance, and social cohesion. The system is designed to process these heterogeneous datasets, engineer relevant features, train robust machine learning models, and evaluate their performance using a variety of metrics, including those specific to business or policy needs. The ultimate goal is to provide early warnings of potential systemic risks.
 
-# Early Warning System for Outbreak Detection
-
-This project aims to develop an Early Warning System (EWS) for outbreak detection by integrating data from multiple sources. The system is designed to process diverse datasets, engineer relevant features, train robust machine learning models, and evaluate their performance using a variety of metrics, including those specific to business needs. The ultimate goal is to detect early signals of emerging outbreaks before they become widespread and to generate actionable alerts.
-
-# Project Structure
-early_warning_system/
+Project Structure
+civilizational_risk_assessment/
 ├── config/
 │   └── config.yaml             # Configuration file for experiments
 ├── data/
 │   ├── raw/                    # Stores raw, unprocessed data
 │   └── processed/              # Stores cleaned and preprocessed data
-├── notebooks/                  # Jupyter notebooks for exploration and prototyping
 ├── src/
 │   ├── __init__.py             # Initializes the src directory as a Python package
 │   ├── data_processing.py      # Functions for data loading, cleaning, and merging
 │   ├── feature_engineering.py  # Functions for feature creation and transformation
 │   ├── model_training.py       # Functions for model definition, training, and hyperparameter tuning
 │   ├── model_evaluation.py     # Functions for model evaluation and visualization
-│   └── utils.py                # Utility functions (e.g., logging, data splitting)
-├── tests/                      # Unit and integration tests (placeholder)
+│   ├── utils.py                # Utility functions (e.g., logging, data splitting)
 ├── main.py                     # Main script to run the entire pipeline
 ├── README.md                   # Project overview and setup instructions
 └── requirements.txt            # List of Python dependencies
 
-# Features
-- Expanded Data Integration: Designed to handle data from multiple heterogeneous sources, including:
-    - Syndromic Surveillance Data: Internet search trends (e.g., Google Flu Trends), social media mentions of symptoms, news reports of unusual illnesses.
-    - Weather and Climate Data: For predicting vector-borne disease outbreaks.
-    - Mobility Data: Human movement patterns (anonymized mobile data, travel statistics).
+Features
+Data Integration: Designed to handle data from multiple heterogeneous sources relevant to civilizational risk, including:
 
-- Modular Design: Separate modules for data processing, feature engineering, model training, and evaluation.
+Environmental Data: Climate change indicators, resource depletion, natural disaster frequency.
 
-- Reproducibility: Configuration file (config.yaml) for managing experiment parameters.
+Economic Data: GDP growth, inflation, unemployment rates, debt levels, income inequality.
 
-- Robust Data Splitting: Proper train/validation/test splits to ensure unbiased model evaluation.
+Governance Data: Corruption indices, political stability, rule of law, government effectiveness.
 
-- Class Imbalance Handling: Strategies to address imbalanced datasets common in outbreak detection (e.g., scale_pos_weight, weighted loss, sampling techniques).
+Social Cohesion Data: Social unrest indicators, demographic shifts, health disparities, education levels.
 
-- Advanced Feature Engineering: Utilizes modern techniques to create impactful features, including those derived from text and time-series data.
+News & Reports: Textual data from global news outlets and analytical reports for qualitative insights.
 
-- Diverse Model Support: Includes LightGBM, Neural Networks, and a placeholder for AI API integration, now expanded to include:
+Modular Design: Separate modules for data processing, feature engineering, model training, and evaluation.
 
-    - Time Series Forecasting: To predict future case numbers or disease activity.
+Reproducibility: Configuration file (config.yaml) for managing experiment parameters.
 
-    - Anomaly Detection: To identify unusual spikes in reported symptoms or news mentions.
+Robust Data Splitting: Proper train/validation/test splits to ensure unbiased model evaluation.
 
-    - Natural Language Processing (NLP): To analyze text from news, social media, or medical reports for early signs of disease.
+Class Imbalance Handling: Strategies to address imbalanced datasets (e.g., scale_pos_weight, weighted loss, sampling techniques), common when predicting rare systemic failure events.
 
-    - Deep Learning (e.g., Recurrent Neural Networks - RNNs or Transformers): For complex time-series and sequential data.
+Feature Engineering: Techniques to create impactful features, including time-series trends and NLP features from textual reports.
 
-- Hyperparameter Tuning: Implements methods for optimizing model hyperparameters.
+Machine Learning Models:
 
-- Comprehensive Evaluation:
+LightGBM: A robust gradient boosting model for classification or regression.
 
-    - Precision-Recall curves
+Neural Networks: For complex pattern recognition in tabular data.
 
-    - ROC curves
+Hyperparameter Tuning: Implements methods for optimizing model hyperparameters (e.g., using Optuna for LightGBM).
 
-    - Standard classification metrics (accuracy, precision, recall, F1-score)
+Comprehensive Evaluation:
 
-    - **Business-specific metrics (placeholder for custom metrics relevant to outbreak detection).
+Precision-Recall curves
 
-- Output: An alert system that flags potential emerging outbreaks based on real-time data.
+ROC curves
 
-- Version Control: Recommended use of Git for tracking changes and collaboration.
+Standard classification metrics (accuracy, precision, recall, F1-score)
+
+Business/Policy-specific metrics (e.g., cost of false alarms vs. cost of missed risks).
+
+Output: A system that flags potential systemic risks for regions or societies.
+
+Version Control: Recommended use of Git for tracking changes and collaboration.
 
 Setup Instructions
 Clone the repository:
 
-git clone https://github.com/your-username/early_warning_system.git
-cd early_warning_system
+git clone https://github.com/your-username/civilizational_risk_assessment.git
+cd civilizational_risk_assessment
 
-(Note: Replace https://github.com/your-username/early_warning_system.git with your actual repository URL)
+(Note: Replace https://github.com/your-username/civilizational_risk_assessment.git with your actual repository URL)
 
 Create a virtual environment (recommended):
 
@@ -86,7 +85,7 @@ Install dependencies:
 pip install -r requirements.txt
 
 Place your raw data:
-Put your raw data files (e.g., CSV, JSON) into the data/raw/ directory. The data_processing.py module will be set up to read from here. Ensure you have data for syndromic surveillance, weather/climate, and mobility if you plan to use those features.
+Put your raw data files (e.g., CSV, JSON) into the data/raw/ directory. The data_processing.py module will be set up to read from here. Ensure you have data for environmental, economic, governance, and social cohesion factors.
 
 How to Run
 To execute the entire pipeline, from data processing to model evaluation:
@@ -98,11 +97,11 @@ You can modify parameters in config/config.yaml to experiment with different set
 Configuration
 The config/config.yaml file allows you to customize various aspects of the pipeline:
 
-data_paths: Paths to raw data files, now including syndromic, weather, and mobility data.
+data_paths: Paths to raw data files, now including environmental, economic, governance, social, and news data.
 
 preprocessing: Settings for data cleaning and merging, including text preprocessing.
 
-feature_engineering: Parameters for feature creation, including NLP features and advanced time-series features.
+feature_engineering: Parameters for feature creation, including time-series trends and NLP features.
 
 data_split: Ratios for train, validation, and test sets.
 
@@ -113,14 +112,6 @@ models:
 lightgbm: Hyperparameters and training settings.
 
 neural_network: Architecture and training settings.
-
-ai_api: Placeholder for API keys or endpoints.
-
-time_series_forecasting: Configuration for time series models.
-
-anomaly_detection: Configuration for anomaly detection algorithms.
-
-deep_learning_sequence: Configuration for RNNs/Transformers.
 
 evaluation: Paths for saving plots and reports.
 
@@ -137,11 +128,11 @@ git add .
 
 Commit changes:
 
-git commit -m "Initial project setup"
+git commit -m "Initial project setup for Civilizational Risk Assessment"
 
 Create a new branch for features/fixes:
 
-git checkout -b feature/new-feature
+git checkout -b feature/new-risk-indicator
 
 Switch between branches:
 
@@ -149,7 +140,7 @@ git checkout main
 
 Merge changes:
 
-git merge feature/new-feature
+git merge feature/new-risk-indicator
 
 Push to remote repository:
 
@@ -161,14 +152,12 @@ git log
 
 Regularly commit your changes with descriptive messages to maintain a clear history of your work.
 
-# Future Enhancements
-Implement specific data sources (e.g., public health APIs, social media feeds).
+Future Enhancements
+Integrate more sophisticated data sources (e.g., satellite imagery for environmental changes, real-time news feeds).
 
-Integrate real-time data streaming capabilities.
+Develop a dashboard for visualizing risk levels and contributing factors.
 
-Develop a dashboard for visualizing outbreak alerts.
-
-Explore more advanced deep learning architectures.
+Explore advanced time-series models for forecasting risk.
 
 Add MLOps components for model deployment and monitoring.
 
